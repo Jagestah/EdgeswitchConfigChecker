@@ -4,12 +4,19 @@ import paramiko
 import getpass
 import time
 import re
+import sys
 
 #Gather details about the device to connect to
-device_ip = raw_input("Enter device IP: ")
-un = raw_input("Enter username: ")
-pw = getpass.getpass("Enter password: ")
+#device_ip = raw_input("Enter device IP: ")
+#un = raw_input("Enter username: ")
+#pw = getpass.getpass("Enter password: ")
 #unmskey = raw_input("Enter entire UNMS Key: ")
+
+#Arguments Passed via CLI:
+#print sys.argv
+device_ip = sys.argv[1]
+un = sys.argv[2]
+pw = sys.argv[3]
 
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
