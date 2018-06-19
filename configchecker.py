@@ -1,5 +1,5 @@
 #Python Ubiquiti Config Checker
-#Created by JJ Mckeever - jj@greatservice.com
+#Created by JJ Mckeever - mckeeverjohnj@gmail.com
 import paramiko
 import getpass
 import time
