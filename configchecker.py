@@ -1,9 +1,9 @@
 #Python Ubiquiti Config Checker
 #Created by JJ Mckeever - mckeeverjohnj@gmail.com
 import paramiko
-import getpass
+#import getpass
 import time
-import re
+#import re
 import sys
 
 #Gather details about the device to connect to
@@ -34,7 +34,7 @@ run_config = conn.recv(1000000)			#Saves the running config as the variable run_
 #print(output)
 ssh.close()
 
-with open(device_ip+'-backup.txt', 'w+') as backup:
+with open('/etc/logs/'device_ip+'-backup.txt', 'w+') as backup:
 	backup.write(run_config)
 
 #Return the number of interfaces on the switch.
