@@ -3,7 +3,7 @@
 import paramiko
 #import getpass
 import time
-#import re
+import os
 import sys
 
 #Gather details about the device to connect to
@@ -13,10 +13,13 @@ import sys
 #unmskey = raw_input("Enter entire UNMS Key: ")
 
 #Arguments Passed via CLI:
-#print sys.argv
-device_ip = sys.argv[1]
-un = sys.argv[2]
-pw = sys.argv[3]
+user = os.environ['USER']
+device_ip = os.environ['PYTHON_DEVICE']
+print device_ip
+un = os.environ['PYTHON_USERNAME']
+print un
+pw = os.environ['PYTHON_PASSWORD']
+print pw
 
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -34,7 +37,7 @@ run_config = conn.recv(1000000)			#Saves the running config as the variable run_
 #print(output)
 ssh.close()
 
-with open('/etc/logs/'device_ip+'-backup.txt', 'w+') as backup:
+with open('/home/'+user+'/logs/'+device_ip+'-backup.txt', 'w+') as backup:
 	backup.write(run_config)
 
 #Return the number of interfaces on the switch.
