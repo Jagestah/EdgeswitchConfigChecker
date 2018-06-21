@@ -1,37 +1,24 @@
 #Python Ubiquiti Config Checker
 #Created by JJ Mckeever - mckeeverjohnj@gmail.com
 import paramiko
-#import getpass
 import time
 import os
 import sys
 
-#Gather details about the device to connect to
-#device_ip = raw_input("Enter device IP: ")
-#un = raw_input("Enter username: ")
-#pw = getpass.getpass("Enter password: ")
-#unmskey = raw_input("Enter entire UNMS Key: ")
-
-#Arguments Passed via CLI:
-#user = os.environ['USER']
-#device_ip = str(open('/etc/secrets/ip.txt'))
+#Gather details about the device to connect to from the Kubernetes secrets
 with open('/etc/secrets/ip.txt') as device_ip:
 	device_ip = device_ip.read()
-#print device_ip
-#un = str(open('/etc/secrets/un.txt'))
 with open('/etc/secrets/un.txt') as un:
 	un = un.read()
-#print un
-#pw = str(open('/etc/secrets/pwd.txt'))
 with open('/etc/secrets/pwd.txt') as pw:
 	pw = pw.read()
-#print pw
 
+#Accept any SSH key
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
+#Connect to the device and get lthe running config 
 ssh.connect(hostname=device_ip, username=un, password=pw)
-
 conn = ssh.invoke_shell()
 conn.send('enable\n'+pw+'\n')
 conn.send('terminal length 0\n')		#Sets unlimited terminal length so the entire of the running config is sent without further input
@@ -40,9 +27,9 @@ conn.send('show run\n')
 time.sleep(1)
 conn.send('no terminal length')			#Resets terminal length to the default value
 run_config = conn.recv(1000000)			#Saves the running config as the variable run_config
-#print(output)
 ssh.close()
 
+#Save a copy of the running config to a log file.
 with open('/etc/logs/'+device_ip+'-backup.txt', 'w+') as backup:
 	backup.write(run_config)
 
@@ -71,14 +58,6 @@ else:
 	mgmtresult = 'mgmt-vlan not found'
 	print(mgmtresult)
 
-#Check for Voice VLAN - Currently not working
-#if 'voice vlan\r\n' in run_config:
-#	split_config = run_config.split('voice vlan ')
-#	split_config2 = split_config[1].split('\r\n', 1)
-#	print("Voice VLAN - "+split_config2[0])
-#else:
-#	print('Voice VLAN not found')
-
 #List number of Users
 user_list = str(run_config.count('username'))
 user_result = 'The switch has '+user_list+' user(s)'
@@ -88,17 +67,7 @@ for item in run_config.split("\n"):
 		item = item.split('"')
 		print("	"+item[1])
 
-#Compare unmskey against the UNMS key found in the config - not complete
-#if 'unms key ' in run_config:
-#	split_config = run_config.split('unms key ')
-#	split_config2 = split_config[1].split('\r\n', 1)
-#	mgmtresult = "Management VLAN - "+split_config2[0]
-#	print(mgmtresult)
-#else:
-#	mgmtresult = 'mgmt-vlan not found'
-#	print(mgmtresult)
-
-#Count DNS name-servers
+#Count DNS name-servers and list them
 dns_result = "The switch's name servers"
 print(dns_result)
 for item in run_config.split("\n"):
