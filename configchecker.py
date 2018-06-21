@@ -14,11 +14,11 @@ import sys
 
 #Arguments Passed via CLI:
 #user = os.environ['USER']
-device_ip = open('/etc/secrets/ip.txt')
+device_ip = str(open('/etc/secrets/ip.txt'))
 print device_ip
-un = open('/etc/secrets/un.txt')
+un = str(open('/etc/secrets/un.txt'))
 print un
-pw = open('/etc/secrets/pwd.txt')
+pw = str(open('/etc/secrets/pwd.txt'))
 print pw
 
 ssh = paramiko.SSHClient()
