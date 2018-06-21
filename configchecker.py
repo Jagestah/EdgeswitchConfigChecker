@@ -13,7 +13,7 @@ import sys
 #unmskey = raw_input("Enter entire UNMS Key: ")
 
 #Arguments Passed via CLI:
-user = os.environ['USER']
+#user = os.environ['USER']
 device_ip = os.environ['PYTHON_DEVICE']
 print device_ip
 un = os.environ['PYTHON_USERNAME']
@@ -37,7 +37,7 @@ run_config = conn.recv(1000000)			#Saves the running config as the variable run_
 #print(output)
 ssh.close()
 
-with open('/home/'+user+'/logs/'+device_ip+'-backup.txt', 'w+') as backup:
+with open('/etc/logs/'+device_ip+'-backup.txt', 'w+') as backup:
 	backup.write(run_config)
 
 #Return the number of interfaces on the switch.
