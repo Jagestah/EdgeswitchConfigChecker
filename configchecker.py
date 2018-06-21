@@ -16,12 +16,15 @@ import sys
 #user = os.environ['USER']
 #device_ip = str(open('/etc/secrets/ip.txt'))
 with open('/etc/secrets/ip.txt') as device_ip:
+	ip = ip.read()
 #print device_ip
 #un = str(open('/etc/secrets/un.txt'))
 with open('/etc/secrets/un.txt') as un:
+	un = un.read()
 #print un
 #pw = str(open('/etc/secrets/pwd.txt'))
 with open('/etc/secrets/pwd.txt') as pw:
+	pw = pw.read()
 #print pw
 
 ssh = paramiko.SSHClient()
