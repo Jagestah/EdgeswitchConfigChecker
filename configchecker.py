@@ -16,7 +16,7 @@ import sys
 #user = os.environ['USER']
 #device_ip = str(open('/etc/secrets/ip.txt'))
 with open('/etc/secrets/ip.txt') as device_ip:
-	ip = ip.read()
+	device_ip = device_ip.read()
 #print device_ip
 #un = str(open('/etc/secrets/un.txt'))
 with open('/etc/secrets/un.txt') as un:
